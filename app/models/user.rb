@@ -5,4 +5,10 @@ class User < ApplicationRecord
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :validatable,
          :jwt_authenticatable, jwt_revocation_strategy: self
+
+  has_many :followed_users, class_name: "Follow", foreign_key: :follower_id, dependent: :destroy
+  has_many :followings, through: :followed_users, source: :followed
+
+  has_many :following_users, class_name: "Follow", foreign_key: :followed_id, dependent: :destroy
+  has_many :followers, through: :following_users, source: :follower
 end
