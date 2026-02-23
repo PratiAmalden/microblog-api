@@ -16,4 +16,10 @@ Rails.application.routes.draw do
 
   get "up" => "rails/health#show", as: :rails_health_check
 
+  post "follow", to: "follows#follow"
+  delete "unfollow", to: "follows#unfollow"
+
+  resources :microposts, only: [ :create, :destroy, :show ] do
+    resources :comments, only: [ :create ]
+  end
 end
