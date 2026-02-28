@@ -9,6 +9,6 @@ class Follow < ApplicationRecord
   private
 
   def user_cannot_follow_self
-    errors.add(followed_id: "Can't be the same as follower") if followed_id == follower_id
+    errors.add(:followed, "Can't be the same as follower") if followed_id == follower_id
   end
 end
