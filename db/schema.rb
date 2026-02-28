@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_02_23_155245) do
+ActiveRecord::Schema[8.1].define(version: 2026_02_26_183358) do
   create_table "comments", force: :cascade do |t|
     t.text "body", null: false
     t.datetime "created_at", null: false
@@ -32,7 +32,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_02_23_155245) do
   end
 
   create_table "microposts", force: :cascade do |t|
-    t.text "body", null: false
+    t.text "body", limit: 140, null: false
     t.integer "comments_count", default: 0, null: false
     t.datetime "created_at", null: false
     t.string "title", null: false
