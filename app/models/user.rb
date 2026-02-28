@@ -14,4 +14,12 @@ class User < ApplicationRecord
 
   has_many :microposts, dependent: :destroy
   has_many :comments, dependent: :destroy
+
+  def feed_scope
+    Micropost
+      .where(user_id: followings.select(:id))
+      .or(Micropost.where(user_id: id))
+      .includes(:user)
+      .order(created_at: :desc, id: :desc)
+  end
 end
