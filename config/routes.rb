@@ -12,9 +12,12 @@ Rails.application.routes.draw do
 
   devise_scope :user do
     post "users/signup", to: "users/registrations#create"
+    post "users/signout", to: "users/sessions#destroy"
   end
 
   get "up" => "rails/health#show", as: :rails_health_check
+
+  get "feed", to: "users#feed"
 
   post "follow", to: "follows#follow"
   delete "unfollow", to: "follows#unfollow"
