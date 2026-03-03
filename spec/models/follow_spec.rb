@@ -15,7 +15,7 @@ RSpec.describe Follow, type: :model do
     follow = build(:follow, follower: user_a, followed: user_a)
 
     follow.validate
-    expect(follow.errors[:followed]).to include("Can't be the same as follower")
+    expect(follow.errors[:base]).to include("Can't be the same as follower")
   end
   end
 end
