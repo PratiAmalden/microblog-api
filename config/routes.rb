@@ -20,7 +20,7 @@ Rails.application.routes.draw do
   get "feed", to: "users#feed"
 
   post "follow", to: "follows#follow"
-  delete "unfollow", to: "follows#unfollow"
+  post "unfollow", to: "follows#unfollow"
 
   resources :microposts, only: [ :create, :destroy, :show ] do
     resources :comments, only: [ :create ]

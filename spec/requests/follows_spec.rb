@@ -50,13 +50,13 @@ RSpec.describe "Follows", type: :request do
 
   end
 
-  describe "DELETE /follows" do
+  describe "POST /follows" do
     it "unfollows a user" do
       sign_in user_a 
       create(:follow, follower: user_a, followed: user_b)
 
       expect {
-        delete unfollow_path, params: { followed_id: user_b.id }
+        post unfollow_path, params: { followed_id: user_b.id }
       }.to change(Follow, :count).by(-1)
       expect(response).to have_http_status(:no_content)
       expect(Follow.exists?(follower: user_a, followed: user_b)).to be(false)
@@ -66,7 +66,7 @@ RSpec.describe "Follows", type: :request do
       create(:follow, follower: user_a, followed: user_b)
 
       expect {
-        delete unfollow_path, params: { followed_id: user_b.id }
+        post unfollow_path, params: { followed_id: user_b.id }
       }.not_to change(Follow, :count)
       expect(response).to have_http_status(:unauthorized)
     end
