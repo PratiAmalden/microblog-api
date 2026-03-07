@@ -57,4 +57,4 @@ gem "devise", "~> 5.0"
 
 gem "devise-jwt", "~> 0.13.0"
 
-gem "pagy", "~> 9.3"
+gem "pagy", "~> 43.3"
