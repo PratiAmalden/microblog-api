@@ -1,9 +1,9 @@
 class CommentsController < ApplicationController
   before_action :authenticate_user!
+  before_action :set_post
 
   def create
-    micropost = Micropost.find(params[:micropost_id])
-    comment = micropost.comments.build(comment_params.merge(user: current_user))
+    comment = @post.comments.build(comment_params.merge(user: current_user))
     if comment.save
       render json: comment, status: :created
     else
@@ -15,5 +15,9 @@ class CommentsController < ApplicationController
 
   def comment_params
     params.expect(comment: :body)
+  end
+
+  def set_post
+    @post = Micropost.find(params[:micropost_id])
   end
 end
