@@ -17,9 +17,17 @@ class User < ApplicationRecord
 
   def feed_scope
     Micropost
-      .where(user_id: followings.select(:id))
+      .where(user_id: followed_users.select(:followed_id))
       .or(Micropost.where(user_id: id))
       .includes(:user)
       .order(created_at: :desc, id: :desc)
+  end
+
+  def follow(user)
+    followed_users.create(followed: user)
+  end
+
+  def unfollow(user)
+    followed_users.find_by(followed: user)&.destroy
   end
 end
