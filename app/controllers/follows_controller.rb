@@ -1,18 +1,18 @@
 class FollowsController < ApplicationController
   before_action :authenticate_user!
-  def follow
+  def create
     user = User.find(follow_params[:followed_id])
-    follow = current_user.followed_users.build(followed: user)
+    follow = current_user.follow(user)
 
-    if follow.save
+    if follow.persisted?
       render json: follow.slice(:id, :follower_id, :followed_id), status: :created
     else
       render json: { errors: follow.errors.full_messages }, status: :unprocessable_entity
     end
   end
 
-  def unfollow
-    current_user.followed_users.find_by!(followed_id: params[:followed_id]).destroy
+  def destroy
+    current_user.unfollow(params[:followed_id])
     head :no_content
   end
 
