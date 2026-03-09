@@ -15,7 +15,7 @@ class User < ApplicationRecord
   has_many :microposts, dependent: :destroy
   has_many :comments, dependent: :destroy
 
-  def feed_scope
+  def feed
     Micropost
       .where(user_id: followed_users.select(:followed_id))
       .or(Micropost.where(user_id: id))

@@ -8,26 +8,26 @@ RSpec.describe User, type: :model do
     end
   end
 
-  describe "#feed_scope" do
+  describe "#feed" do
     let(:user_a) { create(:user) }
     let(:user_b) { create(:user) }
 
     it "includes user's own posts" do
       micropost = create(:micropost, user: user_a)
-      expect(user_a.feed_scope).to include(micropost)
+      expect(user_a.feed).to include(micropost)
     end
 
     it "includes followed users posts" do
       create(:follow, follower: user_a, followed: user_b)
       micropost = create(:micropost, user: user_b)
 
-      expect(user_a.feed_scope).to include(micropost)
+      expect(user_a.feed).to include(micropost)
     end
 
     it "retrieve comment counts per post" do
       posts_with_comments = create(:micropost, :with_comments, user: user_a)
-      
-      feed_posts = user_a.feed_scope.to_a
+
+      feed_posts = user_a.feed.to_a
 
       feed_post = feed_posts.find { |p| p.id == posts_with_comments.id }
 
