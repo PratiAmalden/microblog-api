@@ -6,6 +6,8 @@ class User < ApplicationRecord
          :recoverable, :rememberable, :validatable,
          :jwt_authenticatable, jwt_revocation_strategy: self
 
+  validates :email, presence: true, uniqueness: true
+
   has_many :followed_users, class_name: "Follow", foreign_key: :follower_id, dependent: :destroy
   has_many :followings, through: :followed_users, source: :followed
 
@@ -15,11 +17,34 @@ class User < ApplicationRecord
   has_many :microposts, dependent: :destroy
   has_many :comments, dependent: :destroy
 
-  def feed_scope
+  has_many :reactions, dependent: :destroy
+
+  def feed
     Micropost
+      .left_joins(:reactions)
       .where(user_id: followings.select(:id))
       .or(Micropost.where(user_id: id))
       .includes(:user)
+      .select(
+        "microposts.*,
+        COUNT(CASE WHEN reactions.kind = 0 THEN 1 END) AS likes_count,
+        COUNT(CASE WHEN reactions.kind = 1 THEN 1 END) AS dislikes_count"
+      )
+      .group("microposts.id")
       .order(created_at: :desc, id: :desc)
+  end
+
+
+  def filter_posts(keyword)
+    return microposts unless keyword.present?
+    microposts.where("body LIKE ?", "%#{keyword}%")
+  end
+
+  def follow(user)
+    followed_users.create(followed: user)
+  end
+
+  def unfollow(user)
+    followed_users.find_by(followed: user)&.destroy
   end
 end

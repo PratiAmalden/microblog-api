@@ -8,7 +8,7 @@ RSpec.describe "Users", type: :request do
     it "creates a user and returns success message" do
       expect {
         post "/users/signup",
-        params: { user: attributes_for(:user)}
+        params: { user: attributes_for(:user) }
       }.to change(User, :count).by(1)
 
       expect(response).to have_http_status(:created)

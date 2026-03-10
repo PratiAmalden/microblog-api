@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_02_26_183358) do
+ActiveRecord::Schema[8.1].define(version: 2026_03_08_190655) do
   create_table "comments", force: :cascade do |t|
     t.text "body", null: false
     t.datetime "created_at", null: false
@@ -41,6 +41,19 @@ ActiveRecord::Schema[8.1].define(version: 2026_02_26_183358) do
     t.index ["user_id"], name: "index_microposts_on_user_id"
   end
 
+  create_table "reactions", force: :cascade do |t|
+    t.datetime "created_at", null: false
+    t.integer "kind"
+    t.integer "likable_id", null: false
+    t.string "likable_type", null: false
+    t.datetime "updated_at", null: false
+    t.integer "user_id", null: false
+    t.index ["likable_type", "likable_id", "kind"], name: "index_reactions_on_likable_type_and_likable_id_and_kind"
+    t.index ["likable_type", "likable_id"], name: "index_reactions_on_likable"
+    t.index ["user_id", "likable_id", "likable_type"], name: "index_reactions_on_user_id_and_likable_id_and_likable_type", unique: true
+    t.index ["user_id"], name: "index_reactions_on_user_id"
+  end
+
   create_table "users", force: :cascade do |t|
     t.datetime "created_at", null: false
     t.string "email", default: "", null: false
@@ -59,4 +72,5 @@ ActiveRecord::Schema[8.1].define(version: 2026_02_26_183358) do
   add_foreign_key "comments", "microposts"
   add_foreign_key "comments", "users"
   add_foreign_key "microposts", "users"
+  add_foreign_key "reactions", "users"
 end

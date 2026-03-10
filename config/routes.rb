@@ -22,7 +22,12 @@ Rails.application.routes.draw do
   post "follow", to: "follows#follow"
   post "unfollow", to: "follows#unfollow"
 
-  resources :microposts, only: [ :create, :destroy, :show ] do
-    resources :comments, only: [ :create ]
+  resources :microposts do
+    resources :comments, only: [ :create, :destroy ]
+    resources :reactions, only: [ :create, :destroy ]
+  end
+
+  resources :comments do
+    resources :reactions, only: [ :create, :destroy ]
   end
 end

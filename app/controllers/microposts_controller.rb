@@ -1,8 +1,27 @@
 class MicropostsController < ApplicationController
-  before_action :authenticate_user!, only: [ :create, :destroy ]
+  before_action :authenticate_user!, only: [ :create, :destroy, :update ]
 
+  def index
+    render json: Micropost.all
+  end
   def show
-    render json: Micropost.find(params[:id])
+    micropost = Micropost.with_associations.find(params[:id])
+    render json: micropost.as_json(
+      include: {
+        comments:  { only: [ :id, :body, :user_id, :created_at ] },
+        reactions: { only: [ :id, :user_id, :kind ] }
+      }
+    )
+  end
+
+  def update
+    post = current_user.microposts.find(params[:id])
+
+    if post.update(micropost_params)
+      render json: post, status: :ok
+    else
+      render json: { errors: post.errors.full_messages }
+    end
   end
 
   def create
