@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_02_26_183358) do
+ActiveRecord::Schema[8.1].define(version: 2026_03_10_163140) do
   create_table "comments", force: :cascade do |t|
     t.text "body", null: false
     t.datetime "created_at", null: false
@@ -29,6 +29,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_02_26_183358) do
     t.index ["followed_id", "follower_id"], name: "index_follows_on_followed_id_and_follower_id", unique: true
     t.index ["followed_id"], name: "index_follows_on_followed_id"
     t.index ["follower_id"], name: "index_follows_on_follower_id"
+    t.check_constraint "followed_id <> follower_id", name: "no_self_follow"
   end
 
   create_table "microposts", force: :cascade do |t|
