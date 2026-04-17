@@ -6,6 +6,8 @@ class User < ApplicationRecord
          :recoverable, :rememberable, :validatable,
          :jwt_authenticatable, jwt_revocation_strategy: self
 
+  validates :email, format: { with: /\A[^@\s]+@[^@\s]+\.[^@\s]+\z/ }
+
   has_many :followed_users, class_name: "Follow", foreign_key: :follower_id, dependent: :destroy
   has_many :followings, through: :followed_users, source: :followed
 
@@ -17,7 +19,7 @@ class User < ApplicationRecord
 
   def feed
     Micropost
-      .where(user_id: following_ids + [id])
+      .where(user_id: following_ids + [ id ])
       .includes(:user)
       .order(created_at: :desc, id: :desc)
   end
