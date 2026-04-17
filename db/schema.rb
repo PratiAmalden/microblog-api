@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_03_11_171930) do
+ActiveRecord::Schema[8.1].define(version: 2026_04_16_190134) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -42,7 +42,8 @@ ActiveRecord::Schema[8.1].define(version: 2026_03_11_171930) do
     t.string "title", null: false
     t.datetime "updated_at", null: false
     t.bigint "user_id", null: false
-    t.index ["user_id", "created_at", "id"], name: "index_microposts_on_user_id_and_created_at_and_id"
+    t.index ["created_at", "id"], name: "index_microposts_on_created_at_and_id", order: :desc
+    t.index ["user_id", "created_at", "id"], name: "index_microposts_on_user_id_and_created_at_and_id", order: { created_at: :desc, id: :desc }
     t.index ["user_id"], name: "index_microposts_on_user_id"
   end
 
