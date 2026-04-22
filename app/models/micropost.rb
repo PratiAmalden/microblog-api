@@ -6,7 +6,7 @@ class Micropost < ApplicationRecord
 
   has_many :comments, dependent: :destroy
 
-  has_many :reactions, as: :likable
+  has_many :reactions, as: :likable, dependent: :destroy
 
   scope :with_associations, -> { includes(:comments, :reactions) }
 end

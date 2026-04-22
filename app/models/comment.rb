@@ -4,7 +4,7 @@ class Comment < ApplicationRecord
 
   validates :body, presence: true
 
-  has_many :reactions, as: :likable
+  has_many :reactions, as: :likable, dependent: :destroy
 
   scope :with_reactions, -> { includes(:reactions) }
 
