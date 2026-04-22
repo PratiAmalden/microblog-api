@@ -13,8 +13,7 @@ class UsersController < ApplicationController
   end
 
   def feed
-    pagy, microposts = pagy(current_user.feed_scope, items: 20)
-    
+    pagy, microposts = pagy(current_user.feed, items: 20)
     render json: {
       microposts: microposts,
       pagination: {
