@@ -21,16 +21,9 @@ class User < ApplicationRecord
 
   def feed
     Micropost
-      .left_joins(:reactions)
       .where(user_id: followings.select(:id))
       .or(Micropost.where(user_id: id))
       .includes(:user)
-      .select(
-        "microposts.*,
-        COUNT(CASE WHEN reactions.kind = 0 THEN 1 END) AS likes_count,
-        COUNT(CASE WHEN reactions.kind = 1 THEN 1 END) AS dislikes_count"
-      )
-      .group("microposts.id")
       .order(created_at: :desc, id: :desc)
   end
 
