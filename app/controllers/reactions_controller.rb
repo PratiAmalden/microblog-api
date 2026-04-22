@@ -1,9 +1,12 @@
-class LikeController < ApplicationController
+class ReactionsController < ApplicationController
   before_action :authenticate_user!, :set_likable
 
   def create
-    reaction = @likable.reactions.find_or_initialize_by(user: current_id)
-    reaction.kind = reaction_params[:kind]
+    reaction = Reaction.react(
+      user: current_user,
+       kind: reaction_params[:kind],
+       likable: @likable
+    )
 
     if reaction.save
       render json: reaction, status: :created
@@ -27,7 +30,7 @@ class LikeController < ApplicationController
   def set_likable
     if params[:micropost_id]
       @likable = Micropost.find(params[:micropost_id])
-    elsif params[:comments]
+    elsif params[:comment_id]
       @likable = Comment.find(params[:comment_id])
     end
   end
