@@ -1,6 +1,7 @@
 class FollowsController < ApplicationController
   before_action :authenticate_user!
-  def follow
+
+  def create
     user = User.find(follow_params[:followed_id])
     follow = current_user.followed_users.build(followed: user)
 
@@ -11,8 +12,9 @@ class FollowsController < ApplicationController
     end
   end
 
-  def unfollow
-    current_user.followed_users.find_by!(followed_id: params[:followed_id]).destroy
+  def destroy
+    unfollow = current_user.followed_users.find_by(followed_id: params[:id])
+    unfollow.destroy
     head :no_content
   end
 
