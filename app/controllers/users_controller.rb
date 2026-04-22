@@ -1,17 +1,6 @@
 class UsersController < ApplicationController
   before_action :authenticate_user!
 
-  def show
-    user = User.find(params[:id])
-    render json: {
-      id: user.id,
-      name: user.name,
-      email: user.email,
-      followings: user.followings.count,
-      followers: user.followers.count
-    }
-  end
-
   def feed
     pagy, microposts = pagy(current_user.feed, items: 20)
 
