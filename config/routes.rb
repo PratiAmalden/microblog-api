@@ -19,15 +19,14 @@ Rails.application.routes.draw do
 
   get "feed", to: "users#feed"
 
-  post "follow", to: "follows#follow"
-  post "unfollow", to: "follows#unfollow"
+  resources :follows, only: [ :create, :destroy ]
 
   resources :microposts do
-    resources :comments, only: [ :create, :destroy ]
+    resources :comments do
+      resources :reactions, only: [ :create, :destroy ]
+    end
     resources :reactions, only: [ :create, :destroy ]
   end
 
-  resources :comments do
-    resources :reactions, only: [ :create, :destroy ]
-  end
+  match "*unmatched", to: "application#route_not_found", via: :all
 end
