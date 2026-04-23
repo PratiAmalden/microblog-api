@@ -18,8 +18,10 @@ class User < ApplicationRecord
   has_many :comments, dependent: :destroy
 
   def feed
+    following_ids_subquery = Follow.where(follower_id: id).select(:followed_id)
     Micropost
-      .where(user_id: following_ids + [ id ])
+      .where(user_id: following_ids_subquery)
+      .or(Micropost.where(user_id: id))
       .includes(:user)
       .order(created_at: :desc, id: :desc)
   end
