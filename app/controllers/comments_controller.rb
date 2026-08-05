@@ -18,6 +18,6 @@ class CommentsController < ApplicationController
   end
 
   def set_post
-    @post = Micropost.find(params[:micropost_id])
+    @post = Post.find(params[:post_id])
   end
 end
