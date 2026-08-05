@@ -12,19 +12,19 @@ RSpec.describe User, type: :model do
 
   describe "#feed" do
     it "includes user's own posts" do
-      micropost = create(:micropost, user: user)
-      expect(user.feed).to include(micropost)
+      post = create(:post, user: user)
+      expect(user.feed).to include(post)
     end
 
     it "includes followed users posts" do
       create(:follow, follower: user, followed: other_user)
-      micropost = create(:micropost, user: other_user)
+      post = create(:post, user: other_user)
 
-      expect(user.feed).to include(micropost)
+      expect(user.feed).to include(post)
     end
 
     it "retrieve comment counts per post" do
-      posts_with_comments = create(:micropost, :with_comments, user: user)
+      posts_with_comments = create(:post, :with_comments, user: user)
 
       expect(user.feed.find(posts_with_comments.id).comments_count).to eq(3)
     end

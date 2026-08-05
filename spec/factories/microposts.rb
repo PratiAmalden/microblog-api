@@ -1,12 +1,12 @@
 FactoryBot.define do
-  factory :micropost do
-    title { "Test micropost title" }
-    body { "Test micropost body" }
+  factory :post do
+    title { "Test post title" }
+    body { "Test post body" }
     user
 
     trait :with_comments do 
       after(:create) do |post|
-        create_list(:comment, 3, micropost: post)
+        create_list(:comment, 3, post: post)
       end
     end
   end

@@ -14,14 +14,14 @@ class User < ApplicationRecord
   has_many :following_users, class_name: "Follow", foreign_key: :followed_id, dependent: :destroy
   has_many :followers, through: :following_users, source: :follower
 
-  has_many :microposts, dependent: :destroy
+  has_many :posts, dependent: :destroy
   has_many :comments, dependent: :destroy
 
   def feed
     following_ids_subquery = Follow.where(follower_id: id).select(:followed_id)
-    Micropost
+    Post
       .where(user_id: following_ids_subquery)
-      .or(Micropost.where(user_id: id))
+      .or(Post.where(user_id: id))
       .includes(:user)
       .order(created_at: :desc, id: :desc)
   end

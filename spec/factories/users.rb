@@ -9,9 +9,9 @@ FactoryBot.define do
     password { "secrete123" }
     password_confirmation { "secrete123" }
 
-    trait :with_microposts do
+    trait :with_posts do
       after(:create) do |user|
-        create_list(:micropost, 3, user: user)
+        create_list(:post, 3, user: user)
       end
     end
   end

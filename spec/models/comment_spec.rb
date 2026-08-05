@@ -7,12 +7,12 @@ RSpec.describe Comment, type: :model do
   end
 
   describe "Counter Cache" do
-    it "micropost.comments_count increase when comment is created" do
-      micropost = create(:micropost)
+    it "post.comments_count increase when comment is created" do
+      post = create(:post)
       expect {
-        create(:comment, micropost: micropost)
+        create(:comment, post: post)
       }.to change { 
-        micropost.reload.comments_count
+        post.reload.comments_count
       }.by(1)
     end
   end
